@@ -25,4 +25,15 @@ myPromise.then(
 // Promises can be
 // 1. Pending 2. Fulfilled 3. Rejected
 
+let anotherPromise = new Promise(function(resolve, reject) {
+    let x = 1 + 1;
+    if (x === 2) { resolve("Working!") }
+    else { reject("Not Working :(") }
+});
+
+anotherPromise.then(value => {
+    console.log(value);
+}).catch(err => {
+    console.log(err);
+});
 
