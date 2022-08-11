@@ -25,9 +25,7 @@ function App() {
         <div>
             <h1>{say("It's ok!")}</h1>
 
-            <label htmlFor="search">Search: </label>
-            <input id="search" type="text" />
-
+            <Search />
             <hr />
 
             <List />
@@ -43,6 +41,15 @@ function List() {
             </div>
         )
     })
+}
+
+function Search() {
+    return (
+        <div>
+            <label htmlFor="search">Search:</label>
+            <input type='text' id="search" />
+        </div>
+    )
 }
 
 export default App;
