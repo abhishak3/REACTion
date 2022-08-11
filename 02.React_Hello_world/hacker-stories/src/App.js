@@ -34,13 +34,11 @@ function App() {
 }
 
 function List() {
-    return details.map(item => {
-        return (
-            <div key={item.id}>
-                {item.id}. {item.name} is {item.age} years old.
-            </div>
-        )
-    })
+    return details.map(item => (
+        <div key={item.id}>
+            {item.id}. {item.name} is {item.age} years old.
+        </div>
+    ))
 }
 
 function Search() {
