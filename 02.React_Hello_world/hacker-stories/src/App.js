@@ -20,7 +20,7 @@ const details = [
     }
 ]
 
-function App() {
+const App = () => {
     return (
         <div>
             <h1>{say("It's ok!")}</h1>
@@ -33,21 +33,21 @@ function App() {
     );
 }
 
-function List() {
+const List = () => {
     return details.map(item => (
         <div key={item.id}>
             {item.id}. {item.name} is {item.age} years old.
         </div>
-    ))
+    ));
 }
 
-function Search() {
+const Search = () => {
     return (
         <div>
             <label htmlFor="search">Search:</label>
             <input type='text' id="search" />
         </div>
-    )
+    );
 }
 
 export default App;
