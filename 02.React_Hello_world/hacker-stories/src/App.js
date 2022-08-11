@@ -30,18 +30,19 @@ function App() {
 
             <hr />
 
-            {details.map((item, index) => {
-                return (
-                    <div key={index}>{item.name} is {item.age} years old.</div>
-                    // avoid using `index` because if list reorders, every key will
-                    // change and React's reconciler have to redraw the array which
-                    // can cause significant performance loss.
-                    // use key associated with object. It will be more stable.
-                )
-            })}
-
+            <List />
         </div>
     );
+}
+
+function List() {
+    return details.map(item => {
+        return (
+            <div key={item.id}>
+                {item.id}. {item.name} is {item.age} years old.
+            </div>
+        )
+    })
 }
 
 export default App;
