@@ -23,11 +23,15 @@ const App = () => {
         }
     ]
 
+    const handleSearch = event => {
+        console.log(event.target.value);
+    }
+
     return (
         <div>
             <h1>{say("It's ok!")}</h1>
 
-            <Search />
+            <Search onSearch={handleSearch} />
             <hr />
 
             <List list={details} />
@@ -43,7 +47,7 @@ const List = props => {
     ));
 }
 
-const Search = () => {
+const Search = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = React.useState('None');
     // useState hook returns an array with two values
     // takes initial state as a value which is empty string in this case.
@@ -52,11 +56,13 @@ const Search = () => {
     // second element is a function to update this state.
 
     const handleChange = event => {
+        onSearch(event); // callback from App component
         if (event.target.value === '')
             setSearchTerm('None');
         else
             setSearchTerm(event.target.value);
     }
+
 
     return (
         <div>
