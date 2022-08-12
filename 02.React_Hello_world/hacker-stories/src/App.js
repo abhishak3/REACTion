@@ -23,9 +23,15 @@ const App = () => {
         }
     ]
 
+    const [searchTerm, setSearchTerm] = React.useState('');
+
     const handleSearch = event => {
-        console.log(event.target.value);
+        setSearchTerm(event.target.value);
     }
+
+    const searchedDetails = details.filter(detail =>
+        detail.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div>
@@ -34,13 +40,13 @@ const App = () => {
             <Search onSearch={handleSearch} />
             <hr />
 
-            <List list={details} />
+            <List details={searchedDetails} />
         </div>
     );
 }
 
 const List = props => {
-    return props.list.map(item => (
+    return props.details.map(item => (
         <div key={item.id}>
             {item.id}. {item.name} is {item.age} years old.
         </div>
@@ -48,27 +54,10 @@ const List = props => {
 }
 
 const Search = ({ onSearch }) => {
-    const [searchTerm, setSearchTerm] = React.useState('None');
-    // useState hook returns an array with two values
-    // takes initial state as a value which is empty string in this case.
-    // we can initiate with any string literal.
-    // first element of array represents current state
-    // second element is a function to update this state.
-
-    const handleChange = event => {
-        onSearch(event); // callback from App component
-        if (event.target.value === '')
-            setSearchTerm('None');
-        else
-            setSearchTerm(event.target.value);
-    }
-
-
     return (
         <div>
             <label htmlFor="search">Search:</label>
-            <input type='text' id="search" onChange={handleChange} />
-            <p>Searching for <strong>{searchTerm}</strong></p>
+            <input type='text' id="search" onChange={onSearch} />
         </div>
     );
 }
