@@ -2,25 +2,24 @@ function say(message) {
     return `Me: ${message}`;
 }
 
-const details = [
-    {
-        'id': 1,
-        'name': 'Abhishek',
-        'age': 32
-    },
-    {
-        'id': 2,
-        'name': 'Sunny',
-        'age': 18
-    },
-    {
-        'id': 3,
-        'name': 'Honey',
-        'age': 19
-    }
-]
-
 const App = () => {
+    const details = [
+        {
+            'id': 1,
+            'name': 'Abhishek',
+            'age': 32
+        },
+        {
+            'id': 2,
+            'name': 'Sunny',
+            'age': 18
+        },
+        {
+            'id': 3,
+            'name': 'Honey',
+            'age': 19
+        }
+    ]
     return (
         <div>
             <h1>{say("It's ok!")}</h1>
@@ -28,13 +27,13 @@ const App = () => {
             <Search />
             <hr />
 
-            <List />
+            <List list={details} />
         </div>
     );
 }
 
-const List = () => {
-    return details.map(item => (
+const List = props => {
+    return props.list.map(item => (
         <div key={item.id}>
             {item.id}. {item.name} is {item.age} years old.
         </div>
