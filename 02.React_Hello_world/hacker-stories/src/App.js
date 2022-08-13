@@ -23,11 +23,23 @@ const App = () => {
         }
     ]
 
-    const [searchTerm, setSearchTerm] = React.useState('Abhishek'); // initalize for controlled component
+    const [searchTerm, setSearchTerm] = React.useState(
+        localStorage.getItem('search') || 'search'
+    ); // initalize for controlled component
+
+    React.useEffect(() => {
+        localStorage.setItem('search', searchTerm);
+    }, [searchTerm])
 
     const handleSearch = event => {
         setSearchTerm(event.target.value);
+        //setSearchTerm(event.target.value);
+        //// if we use setSearchTerm anywhere else we are gonna break the 
+        //// feature we implemented that is storing state to localStorage.
+        //// So, we'll use useEffect hook
+        //localStorage.setItem('search', event.target.value);
     }
+
 
     const searchedDetails = details.filter(detail =>
         detail.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,7 +58,8 @@ const App = () => {
 }
 
 const List = ({ details }) =>
-    details.map(item => <Item key={item.id} {...item} />)
+    details.map(({ id, ...item }) => <Item key={id} {...item} />)
+// rest operator(left) and spread operator(right)
 
 const Item = ({ name, age }) => (
     <div>
