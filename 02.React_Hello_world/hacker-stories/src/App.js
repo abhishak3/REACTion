@@ -51,14 +51,14 @@ const App = () => {
     );
 
     return (
-        <div>
+        <>
             <h1>{say("It's ok!")}</h1>
 
             <Search search={searchTerm} onSearch={handleSearch} />
             <hr />
 
             <List details={searchedDetails} />
-        </div>
+        </>
     );
 }
 
@@ -67,21 +67,21 @@ const List = ({ details }) =>
 // rest operator(left) and spread operator(right)
 
 const Item = ({ name, age }) => (
-    <div>
+    <>
         {name} is {age} years old.
-    </div>
+    </>
 );
 
 const Search = ({ search, onSearch }) => {
     return (
-        <div>
+        <>
             <label htmlFor="search">Search:</label>
             <input
                 type='text'
                 id='search'
                 value={search}
                 onChange={onSearch} />
-        </div>
+        </>
     );
 }
 
