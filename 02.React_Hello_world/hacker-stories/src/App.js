@@ -30,6 +30,8 @@ const App = () => {
     React.useEffect(() => {
         localStorage.setItem('search', searchTerm);
     }, [searchTerm])
+    // leaving out the second components runs this on every render of component
+    // passing empty array will run only once at initial render
 
     const handleSearch = event => {
         setSearchTerm(event.target.value);
