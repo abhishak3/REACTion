@@ -4,6 +4,18 @@ function say(message) {
     return `Me: ${message}`;
 }
 
+const useSemiPersistentState = (key, initialState) => {
+    const [searchTerm, setSearchTerm] = React.useState(
+        localStorage.getItem('search') || initialState
+    );
+
+    React.useEffect(() => {
+        localStorage.setItem('search', searchTerm);
+    }, [searchTerm, key]);
+
+    return [searchTerm, setSearchTerm];
+}
+
 const App = () => {
     const details = [
         {
@@ -23,16 +35,7 @@ const App = () => {
         }
     ]
 
-    const [searchTerm, setSearchTerm] = React.useState(
-        localStorage.getItem('search') || 'search'
-    ); // initalize for controlled component
-
-    React.useEffect(() => {
-        localStorage.setItem('search', searchTerm);
-    }, [searchTerm])
-    // leaving out the second components runs this on every render of component
-    // passing empty array will run only once at initial render
-
+    const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'abhi');
     const handleSearch = event => {
         setSearchTerm(event.target.value);
         //setSearchTerm(event.target.value);
