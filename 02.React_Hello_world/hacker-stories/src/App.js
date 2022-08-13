@@ -45,13 +45,14 @@ const App = () => {
     );
 }
 
-const List = props => {
-    return props.details.map(item => (
-        <div key={item.id}>
-            {item.id}. {item.name} is {item.age} years old.
-        </div>
-    ));
-}
+const List = ({ details }) =>
+    details.map(item => <Item key={item.id} {...item} />)
+
+const Item = ({ name, age }) => (
+    <div>
+        {name} is {age} years old.
+    </div>
+);
 
 const Search = ({ search, onSearch }) => {
     return (
