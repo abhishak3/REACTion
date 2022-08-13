@@ -23,7 +23,7 @@ const App = () => {
         }
     ]
 
-    const [searchTerm, setSearchTerm] = React.useState('');
+    const [searchTerm, setSearchTerm] = React.useState('Abhishek'); // initalize for controlled component
 
     const handleSearch = event => {
         setSearchTerm(event.target.value);
@@ -37,7 +37,7 @@ const App = () => {
         <div>
             <h1>{say("It's ok!")}</h1>
 
-            <Search onSearch={handleSearch} />
+            <Search search={searchTerm} onSearch={handleSearch} />
             <hr />
 
             <List details={searchedDetails} />
@@ -53,11 +53,15 @@ const List = props => {
     ));
 }
 
-const Search = ({ onSearch }) => {
+const Search = ({ search, onSearch }) => {
     return (
         <div>
             <label htmlFor="search">Search:</label>
-            <input type='text' id="search" onChange={onSearch} />
+            <input
+                type='text'
+                id='search'
+                value={search}
+                onChange={onSearch} />
         </div>
     );
 }
