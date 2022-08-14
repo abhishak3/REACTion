@@ -54,7 +54,12 @@ const App = () => {
         <>
             <h1>{say("It's ok!")}</h1>
 
-            <Search search={searchTerm} onSearch={handleSearch} />
+            <InputWithLabel
+                id="search"
+                label="Search"
+                search={searchTerm}
+                onSearch={handleSearch}
+            />
             <hr />
 
             <List details={searchedDetails} />
@@ -67,23 +72,27 @@ const List = ({ details }) =>
 // rest operator(left) and spread operator(right)
 
 const Item = ({ name, age }) => (
-    <>
+    <div>
         {name} is {age} years old.
-    </>
+    </div>
 );
 
-const Search = ({ search, onSearch }) => {
-    return (
-        <>
-            <label htmlFor="search">Search:</label>
-            <input
-                type='text'
-                id='search'
-                value={search}
-                onChange={onSearch} />
-        </>
-    );
-}
+const InputWithLabel = ({
+    id,
+    label,
+    type = 'text',
+    search,
+    onSearch
+}) => (
+    <>
+        <label htmlFor={id}>{label}</label>
+        <input
+            type={type}
+            id={id}
+            value={search}
+            onChange={onSearch} />
+    </>
+);
 
 export default App;
 
