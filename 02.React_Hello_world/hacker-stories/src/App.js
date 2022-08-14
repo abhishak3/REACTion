@@ -1,15 +1,16 @@
-import React from 'react';
+import { wait } from '@testing-library/user-event/dist/utils';
+import React, { useState, useEffect, useRef } from 'react';
 
 function say(message) {
     return `Me: ${message}`;
 }
 
 const useSemiPersistentState = (key, initialState) => {
-    const [searchTerm, setSearchTerm] = React.useState(
+    const [searchTerm, setSearchTerm] = useState(
         localStorage.getItem('search') || initialState
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         localStorage.setItem('search', searchTerm);
     }, [searchTerm, key]);
 
@@ -59,6 +60,7 @@ const App = () => {
                 label="Search"
                 search={searchTerm}
                 onSearch={handleSearch}
+                isFocused
             >
                 <strong>Search: </strong>
             </InputWithLabel>
@@ -84,17 +86,29 @@ const InputWithLabel = ({
     type = 'text',
     search,
     onSearch,
-    children
-}) => (
-    <>
-        <label htmlFor={id}>{children}</label>
-        <input
-            type={type}
-            id={id}
-            value={search}
-            onChange={onSearch} />
-    </>
-);
+    children,
+    isFocused
+}) => {
+    const inputRef = useRef();
+    useEffect(() => {
+        if (isFocused && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isFocused]);
+
+    return (
+        <>
+            <label htmlFor={id}>{children}</label>
+            <input
+                type={type}
+                id={id}
+                ref={inputRef}
+                value={search}
+                onChange={onSearch}
+            />
+        </>
+    );
+}
 
 export default App;
 
