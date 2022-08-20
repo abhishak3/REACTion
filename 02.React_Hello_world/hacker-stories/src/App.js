@@ -34,9 +34,24 @@ const useSemiPersistentState = (key, initialState) => {
     return [searchTerm, setSearchTerm];
 }
 
+const getAsyncDetails = () => (
+    new Promise(resolve =>
+        setTimeout(
+            () => resolve({ data: { details: initialDetails } }),
+            2000
+        )
+    )
+)
+
 const App = () => {
     const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'abhi');
-    const [details, setDetails] = useState(initialDetails);
+    const [details, setDetails] = useState([]);
+
+    useEffect(() => {
+        getAsyncDetails().then(result => {
+            setDetails(result.data.details);
+        })
+    }, [])
 
     const handleSearch = event => {
         setSearchTerm(event.target.value);
