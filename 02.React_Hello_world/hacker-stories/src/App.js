@@ -1,5 +1,22 @@
-import { wait } from '@testing-library/user-event/dist/utils';
 import React, { useState, useEffect, useRef } from 'react';
+
+const initialDetails = [
+    {
+        'id': 1,
+        'name': 'Abhishek',
+        'age': 32
+    },
+    {
+        'id': 2,
+        'name': 'Sunny',
+        'age': 18
+    },
+    {
+        'id': 3,
+        'name': 'Honey',
+        'age': 19
+    }
+]
 
 function say(message) {
     return `Me: ${message}`;
@@ -18,25 +35,9 @@ const useSemiPersistentState = (key, initialState) => {
 }
 
 const App = () => {
-    const details = [
-        {
-            'id': 1,
-            'name': 'Abhishek',
-            'age': 32
-        },
-        {
-            'id': 2,
-            'name': 'Sunny',
-            'age': 18
-        },
-        {
-            'id': 3,
-            'name': 'Honey',
-            'age': 19
-        }
-    ]
-
     const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'abhi');
+    const [details, setDetails] = useState(initialDetails);
+
     const handleSearch = event => {
         setSearchTerm(event.target.value);
         //setSearchTerm(event.target.value);
@@ -46,10 +47,16 @@ const App = () => {
         //localStorage.setItem('search', event.target.value);
     }
 
-
     const searchedDetails = details.filter(detail =>
         detail.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleRemoveDetails = item => {
+        const newDetails = details.filter(
+            detail => detail.id != item.id
+        );
+        setDetails(newDetails);
+    };
 
     return (
         <>
@@ -66,18 +73,20 @@ const App = () => {
             </InputWithLabel>
             <hr />
 
-            <List details={searchedDetails} />
+            <List details={searchedDetails} onRemoveItem={handleRemoveDetails} />
         </>
     );
 }
 
-const List = ({ details }) =>
-    details.map(({ id, ...item }) => <Item key={id} {...item} />)
-// rest operator(left) and spread operator(right)
+const List = ({ details, onRemoveItem }) =>
+    details.map(item => <Item key={item.id} item={item} onRemoveItem={onRemoveItem} />)
 
-const Item = ({ name, age }) => (
+const Item = ({ item, onRemoveItem }) => (
     <div>
-        {name} is {age} years old.
+        {item.name} is {item.age} years old.
+        <button type="button" onClick={() => onRemoveItem(item)}>
+            Dismiss
+        </button>
     </div>
 );
 
@@ -89,6 +98,7 @@ const InputWithLabel = ({
     children,
     isFocused
 }) => {
+
     const inputRef = useRef();
     useEffect(() => {
         if (isFocused && inputRef.current) {
