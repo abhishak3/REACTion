@@ -34,23 +34,28 @@ const useSemiPersistentState = (key, initialState) => {
     return [searchTerm, setSearchTerm];
 }
 
-const getAsyncDetails = () => (
+const getAsyncDetails = () =>
     new Promise(resolve =>
         setTimeout(
             () => resolve({ data: { details: initialDetails } }),
             2000
         )
     )
-)
 
 const App = () => {
     const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'abhi');
     const [details, setDetails] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
-        getAsyncDetails().then(result => {
-            setDetails(result.data.details);
-        })
+        setIsLoading(true);
+        getAsyncDetails()
+            .then(result => {
+                setDetails(result.data.details);
+                setIsLoading(false);
+            })
+            .catch(() => setIsError(true));
     }, [])
 
     const handleSearch = event => {
@@ -68,7 +73,7 @@ const App = () => {
 
     const handleRemoveDetails = item => {
         const newDetails = details.filter(
-            detail => detail.id != item.id
+            detail => detail.id !== item.id
         );
         setDetails(newDetails);
     };
@@ -88,7 +93,15 @@ const App = () => {
             </InputWithLabel>
             <hr />
 
-            <List details={searchedDetails} onRemoveItem={handleRemoveDetails} />
+            {isError && <p> Something went wrong... </p>}
+
+            {
+                isLoading ? (
+                    <p> Loading... </p>
+                ) : (
+                    <List details={searchedDetails} onRemoveItem={handleRemoveDetails} />
+                )
+            }
         </>
     );
 }
